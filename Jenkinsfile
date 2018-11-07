@@ -9,7 +9,7 @@ pipeline {
     }
     post {
         always {
-            step([$class: 'LogParserPublisher', failBuildOnError: true, showGraphs: true, unstableOnWarning: true, useProjectRule: false])
+            step([$class: 'LogParserPublisher', failBuildOnError: true, parsingRulesPath: 'C:\\Program Files (x86)\\Jenkins\\parsing_rules_example.txt', showGraphs: true, unstableOnWarning: true, useProjectRule: false])
         }
         success {
             echo 'This will run only if successful'

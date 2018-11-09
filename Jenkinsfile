@@ -1,10 +1,26 @@
 pipeline {
-    agent any
+    agent none //any
     stages {
         stage('build') {
             steps {
                 echo "They're grrrrreat!"
             }
+        }
+        stage('SonarQube Analysis') {
+        	steps {
+        		try {
+            		def sqScannerMsBuildHome = tool 'Scanner for MSBuild 4.3'
+    				withSonarQubeEnv('sonar') {
+				      // Due to SONARMSBRU-307 value of sonar.host.url and credentials should be passed on command line
+				      bat "${sqScannerMsBuildHome}\\SonarQube.Scanner.MSBuild.exe begin /k:my:CodedUI /n:${PROJECT_NAME} /v:1.0 /d:sonar.host.url=%SONAR_HOST_URL% /d:sonar.login=%SONAR_AUTH_TOKEN%"
+				      bat 'MSBuild.exe /t:Rebuild'
+				      bat "${sqScannerMsBuildHome}\\SonarQube.Scanner.MSBuild.exe end"
+				    }
+    			} 
+    			catch(error) {
+            		echo "The sonar server could not be reached ${error}"
+        		}
+        	}
         }
     }
     post {

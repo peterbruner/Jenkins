@@ -9,11 +9,14 @@ pipeline {
         stage('SonarQube Analysis') {
         	steps {
         		try {
-            		def sqScannerMsBuildHome = tool 'Scanner for MSBuild 4.3'
-    				withSonarQubeEnv('sonar') {
+            		def sqScannerMsBuildHome = tool 'sonarScannerMSBuild' //defined here http://localhost:8080/configureTools/
+            		def msBuildHome = "C:\Program Files (x86)\MSBuild\14.0\Bin"
+            		def slnHome = "C:\CodedUITesting"
+
+    				withSonarQubeEnv('sonar') { //sonar defined here http://localhost:8080/configure
 				      // Due to SONARMSBRU-307 value of sonar.host.url and credentials should be passed on command line
-				      bat "${sqScannerMsBuildHome}\\SonarQube.Scanner.MSBuild.exe begin /k:my:CodedUI /n:${PROJECT_NAME} /v:1.0 /d:sonar.host.url=%SONAR_HOST_URL% /d:sonar.login=%SONAR_AUTH_TOKEN%"
-				      bat 'MSBuild.exe /t:Rebuild'
+				      bat "${sqScannerMsBuildHome}\\SonarQube.Scanner.MSBuild.exe begin /k:CodedUI /n:CodedUITesting /v:1.0 /d:sonar.host.url=%SONAR_HOST_URL% /d:sonar.login=%SONAR_AUTH_TOKEN%"
+				      bat "${msBuildHome}\\MSBuild.exe ${slnHome} /t:Rebuild"
 				      bat "${sqScannerMsBuildHome}\\SonarQube.Scanner.MSBuild.exe end"
 				    }
     			} 

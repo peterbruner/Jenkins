@@ -8,6 +8,7 @@ pipeline {
         }
         stage('SonarQube Analysis') {
         	steps {
+        			echo "Can this possibly be sonarqube?"
         			def sqScannerMsBuildHome = tool 'sonarScannerMSBuild' //defined here http://localhost:8080/configureTools/
             		def msBuildHome = "C:\\Program Files (x86)\\MSBuild\\14.0\\Bin"
             		def slnHome = "C:\\CodedUITesting"

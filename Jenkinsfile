@@ -10,8 +10,8 @@ pipeline {
         	steps {
         		try {
             		def sqScannerMsBuildHome = tool 'sonarScannerMSBuild' //defined here http://localhost:8080/configureTools/
-            		def msBuildHome = "C:\Program Files (x86)\MSBuild\14.0\Bin"
-            		def slnHome = "C:\CodedUITesting"
+            		def msBuildHome = "C:\\Program Files (x86)\\MSBuild\\14.0\\Bin"
+            		def slnHome = "C:\\CodedUITesting"
 
     				withSonarQubeEnv('sonar') { //sonar defined here http://localhost:8080/configure
 				      // Due to SONARMSBRU-307 value of sonar.host.url and credentials should be passed on command line

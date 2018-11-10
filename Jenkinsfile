@@ -10,6 +10,11 @@ pipeline {
         stage('SonarQube Analysis') {
         	steps {
 	        	echo "SonarQube Analysis Stage"
+	        	withSonarQubeEnv('sonar') { //sonar defined here http://localhost:8080/configure
+				      // Due to SONARMSBRU-307 value of sonar.host.url and credentials should be passed on command line
+				      bat "C:\\sonar-scanner-msbuild-4.3.1.1372-net46\\SonarQube.Scanner.MSBuild.exe begin /k:CodedUI /n:CodedUITesting /v:1.0 /d:sonar.host.url=%SONAR_HOST_URL% /d:sonar.login=%SONAR_AUTH_TOKEN%"
+				      bat "\"C:\\Program Files (x86)\\MSBuild\\14.0\\Bin\\MSBuild.exe" C:\\CodedUITesting /t:Rebuild"
+				      bat "C:\\sonar-scanner-msbuild-4.3.1.1372-net46\\SonarQube.Scanner.MSBuild.exe end"
         	}
         }
     }
